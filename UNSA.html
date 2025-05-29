@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guidance Counseling Form</title>
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            background-image:url("logonapod.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative; 
+        }
+        .wrapper {
+            background-color: rgb(255, 255, 255);
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+        h2 {
+            color: #A52A2A;
+            text-align: center;
+        }
+        input, textarea, select, button {
+            width: calc(100% - 10px); 
+            padding: 5px;
+            margin: 10px 0; 
+            border-radius: 7px;
+            border: 1px solid rgb(208, 99, 99);
+            box-sizing: border-box; 
+        }
+        button {
+            background-color: rgb(16, 36, 148);
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            border: none;
+            border-radius: 7px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #1c9de2;
+        }
+        .image-container {
+            position: absolute;
+            top: 20px; 
+            right: 20px; 
+            max-width: 50%; 
+            height: auto;
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h2>Guidance Counseling Form</h2>
+        <form id="formSubmission" action="saveForm.php" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required/>
+
+            <label for="age">Age:</label>
+            <input type="text" id="age" name="age" required/>
+
+            <label for="department">Department:</label>
+            <select id="department" name="department" required>
+                <option value="">Select...</option>
+                <option value="cetafa">College of Engineering Technology, Architecture and Fine Arts</option>
+                <option value="chmtn">College of Hospitality Management, Tourism and Nutrition</option>
+                <option value="cas">College of Arts and Sciences</option>
+                <option value="ccj">College of Criminal Justice</option>
+                <option value="tc">Teachers College</option>
+                <option value="con">College of Nursing</option>
+                <option value="com">College of Midwifery</option>
+                <option value="cop">College of Pharmacy</option>
+                <option value="cptot">College of Physical Therapy and Occupational Therapy</option>
+                <option value="cba">College of Business and Accountancy</option>
+                <option value="gs">Graduate School</option>
+                <option value="cl">College of Law</option>
+                <option value="sh">Senior High School</option>
+            </select>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required/>
+
+            <label for="issue">What issue are you facing?</label>
+            <textarea id="issue" rows="4" placeholder="Describe your issue here..." name="issue" required></textarea>
+
+            <label for="needs">What do you need help with?</label>
+            <textarea id="needs" rows="4" placeholder="What kind of help do you need?" name="needs" required></textarea>
+
+            <label for="additional">Any additional information:</label>
+            <textarea id="additional" rows="4" placeholder="Any other details you want to share..." name="additional"></textarea>
+
+            <label for="preferredContact">Preferred Contact Method:</label>
+            <select id="preferredContact" name="preferredContact" required>
+                <option value="">Select...</option>
+                <option value="email">Email</option>
+                <option value="phone">Phone</option>
+                <option value="in-person">In-Person</option>
+            </select>
+
+            <!-- Hidden field to store the selected CounselorID -->
+            <input type="hidden" id="counselorID" name="CounselorID" value="">
+
+            <button type="submit">Submit</button>
+        </form>
+        <p id="response"></p>
+    </div>
+
+    <script>
+        document.getElementById("formSubmission").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+
+            fetch("saveForm.php", { 
+                method: "POST",
+                body : formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("response").innerText = data;
+            })
+            .catch(error => {
+                document.getElementById("response").innerText = "Error: " + error;
+            });
+        });
+
+        // Function to set the CounselorID when a counselor is selected
+        function setCounselorID(id) {
+            document.getElementById("counselorID").value = id;
+        }
+    </script>
+</body>
+</html>
